@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Hangman</title>
+  </head>
+  <body>
+    
+    <h1>Hangman</h1>
+    
+    <div id="game">
+      
+      <div id="word"></div>
+      
+      Guesses:&nbsp;<span id="guesses"></span>
+      <br>
+      <br>
+      Wins:&nbsp;<span id="wins"></span>
+      <br>
+      <br>
+      Losses:&nbsp;<span id="losses"></span>
+      
+    </div>
+
+    <script type="text/javascript">
+
+      // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
+      var wordPool = ["test", "for", "hangman","javascript"];
+      var blank = '-';
+      var gameWord = '';
+      var guesses = 0;
+      var wins = 0;
+      var losses = 0;
+        
+      // Randomly picks a word from the word pool array.
+      var wordChoice = wordPool[Math.floor(Math.random() * wordPool.length)];
+      var blankWord = blank.repeat(wordChoice.length);
+        
+      document.getElementById('word').innerHTML = String(blankWord);
+      
+      gameWord = blankWord;
+      
+      // This function is run whenever the user presses a key.
+      document.onkeyup = function(event) {
+      
+        // Determines which key was pressed
+        var userGuess = event.key;
+
+        if(wordChoice.indexOf(userGuess) === -1){
+          guesses++;
+        }
+        else{
+          for(i=0; i < gameWord.length; i++){
+            
+            if(wordChoice[i] === userGuess){
+              gameWord[i] = userGuess;
+            }
+            
+          }
+          
+          console.log(wordChoice.indexOf(userGuess));
+          console.log(userGuess);
+          console.log(gameWord);
+          
+          document.getElementById('word').innerHTML = String(gameWord);
+        }
+        
+        
+        
+        document.getElementById('guesses').innerHTML = String(guesses);
+        
+        document.getElementById('wins').innerHTML = String(wins);
+        
+        document.getElementById('losses').innerHTML = String(losses);
+        
+      };
+
+    </script>
+
+  </body>
+</html>
