@@ -3,79 +3,37 @@
   <head>
     <meta charset="UTF-8">
     <title>Hangman</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
   </head>
   <body>
     
-    <h1>Hangman</h1>
+    <h1 class="text-center">Football Hangman</h1>
     
-    <div id="game">
+    <p class="text-center">Hint: think of football teams, positions etc. </p>
+    
+    <div id="game" class="container">
+      <br>
+      <br>
+      <h3 id="word" class="text-center"></h3>
+      <br>
+      <div id="letters-guessed"></div>
+      <br>
+      <div>Guesses:&nbsp;<span id="guesses"></span></div>
+      <br>
+      <div>Wins:&nbsp;<span id="wins"></span></div>
+      <br>
+      <div>Losses:&nbsp;<span id="losses"></span></div>
       
-      <div id="word"></div>
+      <h3 id="game-results" class="alert text-center"></h3>
       
-      Guesses:&nbsp;<span id="guesses"></span>
-      <br>
-      <br>
-      Wins:&nbsp;<span id="wins"></span>
-      <br>
-      <br>
-      Losses:&nbsp;<span id="losses"></span>
+      <div id="to-start" class="text-center"></div>
       
     </div>
-
-    <script type="text/javascript">
-
-      // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
-      var wordPool = ["test", "for", "hangman","javascript"];
-      var blank = '-';
-      var gameWord = '';
-      var guesses = 0;
-      var wins = 0;
-      var losses = 0;
-        
-      // Randomly picks a word from the word pool array.
-      var wordChoice = wordPool[Math.floor(Math.random() * wordPool.length)];
-      var blankWord = blank.repeat(wordChoice.length);
-        
-      document.getElementById('word').innerHTML = String(blankWord);
-      
-      gameWord = blankWord;
-      
-      // This function is run whenever the user presses a key.
-      document.onkeyup = function(event) {
-      
-        // Determines which key was pressed
-        var userGuess = event.key;
-
-        if(wordChoice.indexOf(userGuess) === -1){
-          guesses++;
-        }
-        else{
-          for(i=0; i < gameWord.length; i++){
-            
-            if(wordChoice[i] === userGuess){
-              gameWord[i] = userGuess;
-            }
-            
-          }
-          
-          console.log(wordChoice.indexOf(userGuess));
-          console.log(userGuess);
-          console.log(gameWord);
-          
-          document.getElementById('word').innerHTML = String(gameWord);
-        }
-        
-        
-        
-        document.getElementById('guesses').innerHTML = String(guesses);
-        
-        document.getElementById('wins').innerHTML = String(wins);
-        
-        document.getElementById('losses').innerHTML = String(losses);
-        
-      };
-
-    </script>
+    
+    
+    <script src="assets/js/game.js"></script>
 
   </body>
 </html>
