@@ -2,14 +2,15 @@
       var game = {
         // game properties
         // an array of all 32 NFL teams
-        wordPool : ['Cardinals', 'Falcons', 'Ravens', 'Bills', 'Panthers', 'Bears', 'Bengals', 'Browns','Broncos', 'Cowboys','Packers', 'Lions', 'Texans', 'Colts', 'Jaguars', 'Chiefs', 'Dolphins', 'Vikings', 'Patriots', 'Saints', 'Giants', 'Jets', 'Raiders', 'Eagles', 'Steelers','Chargers', '49ers', 'Seahawks', 'Rams','Buccaneers', 'Titans', 'Redskins'],
+        wordPool : ['cardinals', 'falcons', 'ravens', 'bills', 'panthers', 'bears', 'bengals', 'browns','broncos', 'cowboys','packers', 'lions', 'texans', 'colts', 'jaguars', 'chiefs', 'dolphins', 'vikings', 'patriots', 'saints', 'giants', 'jets', 'raiders', 'eagles', 'steelers','chargers', 'fortyniners', 'seahawks', 'rams','buccaneers', 'titans', 'redskins'],
         blank : '-',
         wordChoice : '',
+        lastWord : '',
         blankWord : '',
         gameWord : '',
         lettersGuessed : [],
         userGuess : '',
-        guesses : 0 ,
+        guesses : 0,
         wins : 0,
         losses : 0,
         status : false,
@@ -21,6 +22,8 @@
           
           // Randomly picks a word from the word pool array.
           this.wordChoice = this.wordPool[Math.floor(Math.random() * this.wordPool.length)];
+          
+          this.lastWord = this.wordChoice;
 
           // Creates string of blanks the length of the chosen word
           this.blankWord = this.blank.repeat(this.wordChoice.length);
@@ -46,7 +49,7 @@
           if(this.wordChoice === this.blankWord){
             this.wins++;
             document.getElementById('wins').innerHTML = this.wins;
-            document.getElementById('game-results').innerHTML = 'You won! Play again?';
+            document.getElementById('game-results').innerHTML = 'You won! The team was the '+ this.lastWord +'. Play again?';
             this.newGame();
             this.status = false;
           }
@@ -54,7 +57,7 @@
           else if(this.guesses < 1){
             this.losses++;
             document.getElementById('losses').innerHTML = this.losses;
-            document.getElementById('game-results').innerHTML = 'You lose :( Try another!';
+            document.getElementById('game-results').innerHTML = 'You lose :(  The team was the '+ this.lastWord +'. Try another!';
             this.newGame();
             this.status = false;
           }
@@ -62,6 +65,10 @@
         },
         // primary method where userinput, guess comparison and current word update are performed
         gameSession : function(){
+          
+          // to ensure that when inside function 'this' refers to the Game object
+          var self = this;
+          
           // This function is run whenever the user presses a key.
             document.onkeyup = function(event) {
 
@@ -72,23 +79,22 @@
               // if the key pressed is a letter, if will be saved
               // Determines which key was pressed
               if(/^[a-zA-Z]+$/.test(event.key) && event.key.length === 1){
-                this.userGuess = event.key;
+                self.userGuess = event.key;
               }
               else{
-                return
+                return;
               }
 
               // if all letters havent't been guessed and there are guesses left
-              if(this.wordChoice !== this.blankWord && this.guesses > 0){
+              if(self.wordChoice !== self.blankWord && self.guesses > 0){
 
                 // wrong guess
-                if(this.wordChoice.indexOf(this.userGuess) === -1){
-                  this.lettersGuessed += this.userGuess + ' ';
-                  this.guesses--;
-                  console.log(this.lettersGuessed);
-                  document.getElementById('letters-guessed').innerHTML = 'Previous Guesses: ' + this.lettersGuessed;
+                if(self.wordChoice.indexOf(self.userGuess) === -1){
+                  self.lettersGuessed += self.userGuess + ' ';
+                  self.guesses--;
+                  document.getElementById('letters-guessed').innerHTML = 'Previous Guesses: ' + self.lettersGuessed;
 
-                  game.scoreChecker();
+                  self.scoreChecker();
                   
                 }
                 // right guess
@@ -96,29 +102,29 @@
 
                   // splits gameWord into array 
                   // updates gameWord with userGuess and joins gameWord back into a string
-                  this.gameWord = this.gameWord.split('');
-                  this.gameWord[this.wordChoice.indexOf(this.userGuess)] = this.userGuess;
-                  this.gameWord = this.gameWord.join('');
+                  self.gameWord = self.gameWord.split('');
+                  self.gameWord[self.wordChoice.indexOf(self.userGuess)] = self.userGuess;
+                  self.gameWord = self.gameWord.join('');
 
                   // splits wordChoice into array 
                   // updates wordChoice with dash where correct guess to be able to guess multiple of the same letter
-                  this.wordChoice = this.wordChoice.split('');
-                  this.wordChoice[this.wordChoice.indexOf(this.userGuess)] = '-';
-                  this.wordChoice = this.wordChoice.join('');
+                  self.wordChoice = self.wordChoice.split('');
+                  self.wordChoice[self.wordChoice.indexOf(self.userGuess)] = '-';
+                  self.wordChoice = self.wordChoice.join('');
 
                   // Update DOM with remaining letters in word
-                  document.getElementById('word').innerHTML = this.gameWord;
+                  document.getElementById('word').innerHTML = self.gameWord;
 
-                  game.scoreChecker();
+                  self.scoreChecker();
                 }
 
               }
               else{
-                scoreChecker();
+                self.scoreChecker();
               }
 
-              // update the number of guesses on each keypress
-              document.getElementById('guesses').innerHTML = this.guesses;
+            // update the number of guesses on each keypress
+            document.getElementById('guesses').innerHTML = self.guesses;
           }
         }
       }
